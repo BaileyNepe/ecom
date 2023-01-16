@@ -10,11 +10,9 @@ type: Load Balanced Web Service
 http:
   # Requests to this path will be forwarded to your service.
   # To match all requests you can use the "/" path.
-  path: 'api'
+  path: '/'
   # You can specify a custom health check path. The default is "/".
-  healthcheck: '/api/health'
-  # You can specify a custom health check grace period in seconds. The default is 60.
-  healthcheck_grace_period: 30
+  healthcheck: '/'
 
 # Configuration for your containers and service.
 image:
@@ -28,6 +26,8 @@ memory: 512 # Amount of memory in MiB used by the task.
 platform: linux/x86_64 # See https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/#platform
 count: 1 # Number of tasks that should be running in your service.
 exec: true # Enable running commands in your container.
+network:
+  connect: true # Enable Service Connect for intra-environment traffic between services.
 
 # storage:
 # readonly_fs: true       # Limit to read-only access to mounted root filesystems.
@@ -47,7 +47,3 @@ exec: true # Enable running commands in your container.
 #    deployment:            # The deployment strategy for the "test" environment.
 #       rolling: 'recreate' # Stops existing tasks before new ones are started for faster deployments.
 
-environments:
-  test:
-    http:
-      alias: dev.ecomdev.link
